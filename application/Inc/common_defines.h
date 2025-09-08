@@ -13,12 +13,12 @@
 
 #define FIRMWARE_VERSION					0x1713			// v1.7.1b2
 #define USED_PINS_NUM							30					// constant for BluePill and BlackPill boards
-#define MAX_AXIS_NUM							8						// max 8
-#define MAX_BUTTONS_NUM						128					// power of 2, max 128
+#define MAX_AXIS_NUM							0						// max 8
+#define MAX_BUTTONS_NUM						32					// power of 2, max 128
 #define MAX_POVS_NUM							4						// max 4
-#define MAX_ENCODERS_NUM					64					// max 64
-#define MAX_SHIFT_REG_NUM					4						// max 4
-#define MAX_LEDS_NUM							24
+#define MAX_ENCODERS_NUM					26					// max 64
+#define MAX_SHIFT_REG_NUM					0						// max 4
+#define MAX_LEDS_NUM							0
 
 #define AXIS_MIN_VALUE						(-32767)
 #define AXIS_MAX_VALUE						(32767)
