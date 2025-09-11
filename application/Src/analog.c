@@ -1304,7 +1304,7 @@ void AnalogGet (analog_data_t * out_data, analog_data_t * scaled_data, analog_da
 	{
 		memcpy(raw_data, raw_axis_data, sizeof(raw_axis_data));
 	}
-	if (raw_data != NULL)
+	if (out_data != NULL)
 	{
 		memcpy(out_data, out_axis_data, sizeof(raw_axis_data));
 	}

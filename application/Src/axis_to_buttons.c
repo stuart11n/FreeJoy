@@ -157,21 +157,92 @@ void AxisToButtonsGet_ (uint8_t * raw_button_data_buf, dev_config_t * p_dev_conf
 const unsigned char greyvaluesA[4]= {1,1,0,0};
 const unsigned char greyvaluesB[4]= {0,1,1,0};
 
+static int32_t lv[MAX_AXIS_NUM];
+static int32_t lvi[MAX_AXIS_NUM];
+
 void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config, uint8_t * pos)
 {
-      analog_data_t           scaled_axis_data[MAX_AXIS_NUM];
+	analog_data_t 		scaled_axis_data[MAX_AXIS_NUM];
 
-      // get axis data
-      AnalogGet(NULL, scaled_axis_data, NULL);
+	// get axis data
+	AnalogGet(NULL, scaled_axis_data, NULL);
 
       for (uint8_t i=0; i<MAX_AXIS_NUM; i++)
       {
             if (p_dev_config->axes_to_buttons[i].buttons_cnt == 2 ) // if there are two buttons then this is an encoder conversion
             {
-                  int32_t tmp = ((int32_t)scaled_axis_data[i] - AXIS_MIN_VALUE);
+                  int32_t curr = (int32_t)scaled_axis_data[i];
 
-                  unsigned char a= greyvaluesA[tmp&0x3];
-                  unsigned char b= greyvaluesB[tmp&0x3];
+                  if( lv[i] == 0) {
+	                  raw_button_data_buf[*pos] = 0;
+
+	               		(*pos)++;
+
+	                  raw_button_data_buf[*pos] = 0;
+
+	               		(*pos)++;
+
+                    lv[i]= curr;
+
+	               		continue;
+                  }
+
+                  char update= 0;
+
+                 	int32_t delta= curr - lv[i];
+                 	int32_t d;
+
+                  if( delta > 4096/2) {
+                  	d= delta-4096;
+                  } else if( delta < -4096/2) {
+                  	d= delta+4096;
+                  } else {
+                  	d= delta;
+                  }
+
+                  if( d > (65536/256)) {
+	                  	lvi[i]++;
+	                  	update= 1;
+                  } else if( d < -(65536/256)) {
+	                  	lvi[i]--;
+	                  	update= 1;
+                  }
+
+
+                  // if( curr > (lv[i]+(65536/64))) {
+	                //   	lvi[i]++;
+	                //   	update= 1;
+                  // } else if( curr < (lv[i]-(65536/64))) {
+	                //   	lvi[i]--;
+	                //   	update= 1;
+                  // }
+
+                 	// int32_t d;
+
+                  // if( delta > 65536/2) {
+                  // 	d= delta-65536;
+                  // } else if( delta < -65536/2) {
+                  // 	d= delta+65536;
+                  // } else {
+                  // 	d= delta;
+                  // }
+
+                  // if( d > (6)) {
+	                //   	lvi[i]++;
+	                //   	update= 1;
+                  // } else if( d < (6)) {
+	                //   	lvi[i]--;
+	                //   	update= 1;
+                  // }
+
+                	lvi[i]%=3;
+
+                  unsigned char a= greyvaluesA[lvi[i]];
+                  unsigned char b= greyvaluesB[lvi[i]];
+
+                  if(update) {
+                  	lv[i]= curr;
+                  }
 
                   raw_button_data_buf[*pos] = a;
 
