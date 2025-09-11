@@ -192,6 +192,8 @@ void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config
                  	int32_t delta= curr - lv[i];
                  	int32_t d;
 
+                 	// handle axis wraparaound
+
                   if( delta > 4096/2) {
                   	d= delta-4096;
                   } else if( delta < -4096/2) {
@@ -200,10 +202,12 @@ void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config
                   	d= delta;
                   }
 
-                  if( d > (65536/256)) {
+                  // pulses per revolution * 2
+
+                  if( d > (200)) {
 	                  	lvi[i]++;
 	                  	update= 1;
-                  } else if( d < -(65536/256)) {
+                  } else if( d < -(200)) {
 	                  	lvi[i]--;
 	                  	update= 1;
                   }
