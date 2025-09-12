@@ -160,9 +160,15 @@ const unsigned char greyvaluesB[4]= {0,1,1,0};
 static int32_t lv[MAX_AXIS_NUM];
 static int32_t lvi[MAX_AXIS_NUM];
 
+const int32_t THRESHOLD_H= 400;
+const int32_t THRESHOLD_L= 200;
+
+static int32_t fThreshold= THRESHOLD_L;
+static int32_t bThreshold= THRESHOLD_L;
+
 void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config, uint8_t * pos)
 {
-	analog_data_t 		scaled_axis_data[MAX_AXIS_NUM];
+	analog_data_t scaled_axis_data[MAX_AXIS_NUM];
 
 	// get axis data
 	AnalogGet(NULL, scaled_axis_data, NULL);
@@ -194,50 +200,27 @@ void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config
 
                  	// handle axis wraparaound
 
-                  if( delta > 4096/2) {
-                  	d= delta-4096;
-                  } else if( delta < -4096/2) {
-                  	d= delta+4096;
+                  if( delta > 256/2) {
+                  	d= delta-256;
+                  } else if( delta < -256/2) {
+                  	d= delta+256;
                   } else {
                   	d= delta;
                   }
 
                   // pulses per revolution * 2
 
-                  if( d > (200)) {
+                  if( d > (fThreshold)) {
 	                  	lvi[i]++;
 	                  	update= 1;
-                  } else if( d < -(200)) {
+	                  	// fThreshold= THRESHOLD_L;
+	                  	// bThreshold= THRESHOLD_H;
+                  } else if( d < -(bThreshold)) {
 	                  	lvi[i]--;
 	                  	update= 1;
+	                  	// bThreshold= THRESHOLD_L;
+	                  	// fThreshold= THRESHOLD_H;
                   }
-
-
-                  // if( curr > (lv[i]+(65536/64))) {
-	                //   	lvi[i]++;
-	                //   	update= 1;
-                  // } else if( curr < (lv[i]-(65536/64))) {
-	                //   	lvi[i]--;
-	                //   	update= 1;
-                  // }
-
-                 	// int32_t d;
-
-                  // if( delta > 65536/2) {
-                  // 	d= delta-65536;
-                  // } else if( delta < -65536/2) {
-                  // 	d= delta+65536;
-                  // } else {
-                  // 	d= delta;
-                  // }
-
-                  // if( d > (6)) {
-	                //   	lvi[i]++;
-	                //   	update= 1;
-                  // } else if( d < (6)) {
-	                //   	lvi[i]--;
-	                //   	update= 1;
-                  // }
 
                 	lvi[i]%=3;
 
