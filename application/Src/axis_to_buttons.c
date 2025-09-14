@@ -157,29 +157,29 @@ void AxisToButtonsGet_ (uint8_t * raw_button_data_buf, dev_config_t * p_dev_conf
 const unsigned char greyvaluesA[4]= {1,1,0,0};
 const unsigned char greyvaluesB[4]= {0,1,1,0};
 
+const int32_t THRESHOLD_H = 65536/48;
+const int32_t THRESHOLD_L = 65536/256;
+// const int32_t MOD         = 100;
+
 static int32_t lv[MAX_AXIS_NUM];
 static int32_t lvi[MAX_AXIS_NUM];
-
-const int32_t THRESHOLD_H = 1000;
-const int32_t THRESHOLD_L = 200;
-const int32_t MOD         = 100;
-int32_t LOOP              = 0;
-
-static int32_t threshold= THRESHOLD_H;
+static int32_t LOOP[MAX_AXIS_NUM];
+static int32_t threshold[MAX_AXIS_NUM]= {THRESHOLD_H, THRESHOLD_H, THRESHOLD_H, THRESHOLD_H, THRESHOLD_H, THRESHOLD_H, THRESHOLD_H, THRESHOLD_H};
 
 void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config, uint8_t * pos)
 {
 	analog_data_t scaled_axis_data[MAX_AXIS_NUM];
-
-	LOOP++;
 
 	// get axis data
 	AnalogGet(NULL, scaled_axis_data, NULL);
 
       for (uint8_t i=0; i<MAX_AXIS_NUM; i++)
       {
+
             if (p_dev_config->axes_to_buttons[i].buttons_cnt == 2 ) // if there are two buttons then this is an encoder conversion
             {
+									LOOP[i]++;
+
                   int32_t curr = (int32_t)scaled_axis_data[i];
 
                   if( lv[i] == 0) {
@@ -213,10 +213,10 @@ void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config
 
                   // pulses per revolution * 2
 
-                  if( d > (threshold)) {
+                  if( d > (threshold[i])) {
 	                  	lvi[i]++;
 	                  	update= 1;
-                  } else if( d < -(threshold)) {
+                  } else if( d < -(threshold[i])) {
 	                  	lvi[i]--;
 	                  	update= 1;
                   }
@@ -228,12 +228,12 @@ void AxisToButtonsGet(uint8_t * raw_button_data_buf, dev_config_t * p_dev_config
 
                   if(update) {
                   	lv[i]= curr;
-                  	threshold= THRESHOLD_L;
-                  	LOOP= 0;
+                  	threshold[i]= THRESHOLD_L;
+                  	LOOP[i]= 0;
                   } else {
-                  	if(LOOP > 1*200) { // 1 second @ms USB report speed
-	                  	if(threshold < THRESHOLD_H) {
-	                  		threshold++;
+                  	if(LOOP[i] > 3*200) { // 3 seconds USB ms report speed
+	                  	if(threshold[i] < THRESHOLD_H) {
+	                  		threshold[i]++;
 	                  	}
                   	}
                   }
