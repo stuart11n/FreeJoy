@@ -333,39 +333,69 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 				if (pov_group<=0) pov_group = 0;
 				
 			// block center button on direction state change
-				// if (p_button_state->curr_physical_state != p_button_state->prev_physical_state)
-				// {
-				// 	if (pov_group == 0)
-				// 	{
-				// 		for (uint8_t i=0; i<MAX_BUTTONS_NUM; i++)
-				// 		{
-				// 			if (p_dev_config->buttons[i].type == POV1_CENTER)
-				// 			{
-				// 				if( logical_buttons_state[i].current_state == 0) { // dont do it center is not pressed yet
-				// 					break;
-				// 				}
-				// 				logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
-				// 				logical_buttons_state[i].current_state = 0;
-				// 				logical_buttons_state[i].time_last = millis;
-				// 			}
-				// 		}
-				// 	}
-				// 	else if (pov_group == 1)
-				// 	{
-				// 		for (uint8_t i=0; i<MAX_BUTTONS_NUM; i++)
-				// 		{
-				// 			if (p_dev_config->buttons[i].type == POV2_CENTER)
-				// 			{
-				// 				if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
-				// 					break;
-				// 				}
-				// 				logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
-				// 				logical_buttons_state[i].current_state = 0;
-				// 				logical_buttons_state[i].time_last = millis;
-				// 			}
-				// 		}
-				// 	}
-				// }
+				if (p_button_state->curr_physical_state != p_button_state->prev_physical_state)
+				{
+					if (pov_group == 0)
+					{
+						for (uint8_t i=0; i<MAX_BUTTONS_NUM; i++)
+						{
+							if (p_dev_config->buttons[i].type == POV1_CENTER)
+							{
+								if( logical_buttons_state[i].current_state == 0) { // dont do it center is not pressed yet
+									break;
+								}
+								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
+								logical_buttons_state[i].current_state = 0;
+								logical_buttons_state[i].time_last = millis;
+							}
+						}
+					}
+					else if (pov_group == 1)
+					{
+						for (uint8_t i=0; i<MAX_BUTTONS_NUM; i++)
+						{
+							if (p_dev_config->buttons[i].type == POV2_CENTER)
+							{
+								if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
+									break;
+								}
+								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
+								logical_buttons_state[i].current_state = 0;
+								logical_buttons_state[i].time_last = millis;
+							}
+						}
+					}
+					else if (pov_group == 2)
+					{
+						for (uint8_t i=0; i<MAX_BUTTONS_NUM; i++)
+						{
+							if (p_dev_config->buttons[i].type == POV3_CENTER)
+							{
+								if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
+									break;
+								}
+								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
+								logical_buttons_state[i].current_state = 0;
+								logical_buttons_state[i].time_last = millis;
+							}
+						}
+					}
+					else if (pov_group == 3)
+					{
+						for (uint8_t i=0; i<MAX_BUTTONS_NUM; i++)
+						{
+							if (p_dev_config->buttons[i].type == POV4_CENTER)
+							{
+								if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
+									break;
+								}
+								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
+								logical_buttons_state[i].current_state = 0;
+								logical_buttons_state[i].time_last = millis;
+							}
+						}
+					}
+				}
 
 				int centerPressed= 0;
 
