@@ -665,42 +665,42 @@ static const dev_config_t init_config =
 	.axes_to_buttons[0].points[0] = 0,
 	.axes_to_buttons[0].points[1] = 255,
 	.axes_to_buttons[0].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[1].points[0] = 0,
 	.axes_to_buttons[1].points[1] = 255,
 	.axes_to_buttons[1].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[2].points[0] = 0,
 	.axes_to_buttons[2].points[1] = 255,
 	.axes_to_buttons[2].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[3].points[0] = 0,
 	.axes_to_buttons[3].points[1] = 255,
 	.axes_to_buttons[3].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[4].points[0] = 0,
 	.axes_to_buttons[4].points[1] = 255,
 	.axes_to_buttons[4].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[5].points[0] = 0,
 	.axes_to_buttons[5].points[1] = 255,
 	.axes_to_buttons[5].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[6].points[0] = 0,
 	.axes_to_buttons[6].points[1] = 255,
 	.axes_to_buttons[6].buttons_cnt = 0,
-	
+
 	.axes_to_buttons[7].points[0] = 0,
 	.axes_to_buttons[7].points[1] = 255,
 	.axes_to_buttons[7].buttons_cnt = 0,
-	
-	
+
+
 	.shift_config[0].button = -1,
 	.shift_config[1].button = -1,
 	.shift_config[2].button = -1,
 	.shift_config[3].button = -1,
 	.shift_config[4].button = -1,
-	
+
 	.encoders[0] = ENCODER_CONF_2x,
 	.encoders[1] = ENCODER_CONF_2x,
 	.encoders[2] = ENCODER_CONF_2x,
@@ -717,7 +717,17 @@ static const dev_config_t init_config =
 	.encoders[13] = ENCODER_CONF_2x,
 	.encoders[14] = ENCODER_CONF_2x,
 	.encoders[15] = ENCODER_CONF_2x,
-	
+	.encoders[16] = ENCODER_CONF_2x,
+	.encoders[17] = ENCODER_CONF_2x,
+	.encoders[18] = ENCODER_CONF_2x,
+	.encoders[19] = ENCODER_CONF_2x,
+	.encoders[20] = ENCODER_CONF_2x,
+	.encoders[21] = ENCODER_CONF_2x,
+	.encoders[22] = ENCODER_CONF_2x,
+	.encoders[23] = ENCODER_CONF_2x,
+	.encoders[24] = ENCODER_CONF_2x,
+	.encoders[25] = ENCODER_CONF_2x,
+
 	.led_pwm_config[0].duty_cycle = 50,
 	.led_pwm_config[0].is_axis = 0,
 	.led_pwm_config[0].axis_num = 0,
