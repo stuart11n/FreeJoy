@@ -273,6 +273,7 @@ typedef struct logical_buttons_state_t
 	uint8_t off_state 						:1;	
 	uint8_t current_state					:1;	
 	uint8_t delay_act 						:2;	
+	uint8_t suppress				      :1;
 	
 } logical_buttons_state_t;
 
