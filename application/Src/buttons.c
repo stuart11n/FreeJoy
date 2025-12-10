@@ -163,8 +163,8 @@ static void LogicalButtonProcessTimer (logical_buttons_state_t * p_button_state,
 	{
 		p_button_state->delay_act = BUTTON_ACTION_IDLE;
 	}
-	else if (p_button_state->delay_act == BUTTON_ACTION_BLOCK && 			// blocking button needed for Alps hats
-			 millis - p_button_state->time_last > 100)
+	if (p_button_state->delay_act == BUTTON_ACTION_BLOCK && 			// blocking button needed for Alps hats
+			 millis - p_button_state->time_last > 1000)
 	{
 		p_button_state->delay_act = BUTTON_ACTION_IDLE;
 	}
@@ -333,7 +333,7 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 								}
 							}
 						}
-						if( pov_group == 0) {
+						if( pov_group == 3) {
 							for (uint8_t i=3; i<MAX_BUTTONS_NUM; i++)
 							{
 								if( p_dev_config->buttons[i].type == POV4_UP ||
@@ -461,7 +461,7 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 			case POV1_RIGHT:
 			case POV1_DOWN:
 			case POV1_LEFT:
-				if (pov_group<=0) pov_group = 0;
+				if (!pov_group) pov_group = 0;
 
 			// block center button on direction state change
 				if (p_button_state->curr_physical_state != p_button_state->prev_physical_state)
@@ -473,7 +473,7 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 							if (p_dev_config->buttons[i].type == POV1_CENTER)
 							{
 								if( logical_buttons_state[i].current_state == 0) { // dont do it center is not pressed yet
-									break;
+									// break;
 								}
 								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
 								logical_buttons_state[i].current_state = 0;
@@ -488,7 +488,7 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 							if (p_dev_config->buttons[i].type == POV2_CENTER)
 							{
 								if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
-									break;
+									// break;
 								}
 								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
 								logical_buttons_state[i].current_state = 0;
@@ -503,7 +503,7 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 							if (p_dev_config->buttons[i].type == POV3_CENTER)
 							{
 								if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
-									break;
+									// break;
 								}
 								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
 								logical_buttons_state[i].current_state = 0;
@@ -518,7 +518,7 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 							if (p_dev_config->buttons[i].type == POV4_CENTER)
 							{
 								if( logical_buttons_state[i].current_state == 0) { // dont do if center is not pressed yet
-									break;
+									// break;
 								}
 								logical_buttons_state[i].delay_act = BUTTON_ACTION_BLOCK;
 								logical_buttons_state[i].current_state = 0;
@@ -622,7 +622,8 @@ void LogicalButtonProcessState (logical_buttons_state_t * p_button_state, uint8_
 					pov_buf[pov_group] &= ~(1 << 1);
 					pov_buf[pov_group] |= (p_button_state->current_state << 1);
 				}
-				else
+				else if (p_dev_config->buttons[num].type == POV1_LEFT || p_dev_config->buttons[num].type == POV2_LEFT ||
+								 p_dev_config->buttons[num].type == POV3_LEFT || p_dev_config->buttons[num].type == POV4_LEFT)
 				{
 					pov_buf[pov_group] &= ~(1 << 0);
 					pov_buf[pov_group] |= (p_button_state->current_state << 0);
